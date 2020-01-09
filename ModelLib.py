@@ -123,7 +123,7 @@ def FGN(para, feature="", use_bert=True):
         slice_img = MyLayer.SlidingWindow(window_size=8, stride=1)(img_repre)
         fusion_repre = MyLayer.sliding_Outer()([slice_repre, slice_img])
         fusion_repre = TimeDistributed(MyLayer.WordAttention())(fusion_repre)
-        fusion_repre = Dropout(0.2)(fusion_repre)
+        # fusion_repre = Dropout(0.2)(fusion_repre)
         fea_input, radical_repre = add_fea_repre(bool_input,
                                                  para, para['radical_max'], para['radical_vocab_size'])
         # slice_fusion = MyLayer.SlidingWindow(window_size=48, stride=24)(repre)
@@ -135,7 +135,6 @@ def FGN(para, feature="", use_bert=True):
         # # fusion_repre_1 = Multiply()([fusion_repre_1, bool_embed_1])
         # fusion_repre_1 = Masking()(fusion_repre_1)
         repre = Concatenate()([repre,fusion_repre,img_repre,radical_repre])
-
 
 
     if feature == "img":
@@ -151,7 +150,6 @@ def FGN(para, feature="", use_bert=True):
         # fusion_repre = MyLayer.Outer()([BatchNormalization()(repre),BatchNormalization()(img_repre)])
         # fusion_repre = TimeDistributed(Dense(128,activation="tanh"))(fusion_repre)
         # fusion_repre = Dropout(0.2)(fusion_repre)
-        # repre = Add()([fusion_repre,repre])
         repre = Concatenate(axis=2)([repre,img_repre,fusion_repre])
         # repre = fusion_repre
         # repre = TimeDistributed(Dense(units=768,activation="relu"))(repre)
@@ -193,7 +191,7 @@ def FGN(para, feature="", use_bert=True):
 
 
     # repre = LSTM(para["lstm_unit"], return_sequences=True, dropout= para["rnn_dropout"])(repre)
-    # repre = Bidirectional(LSTM(para["lstm_unit"], return_sequences=True, dropout=para["rnn_dropout"]),merge_mode="sum")(repre)
+    repre = Bidirectional(LSTM(para["lstm_unit"], return_sequences=True, dropout=para["rnn_dropout"]),merge_mode="sum")(repre)
 
     crf = CRF(para["tag_num"], sparse_target=True)
     crf_output = crf(repre)

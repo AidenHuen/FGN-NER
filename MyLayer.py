@@ -620,7 +620,7 @@ class WordAttention(Layer):
         # uit = K.relu(uit)
         # uit = K.softmax(uit)
         uit = K.sigmoid(uit)
-        ait = LayerNormalization()(K.squeeze(K.dot(uit, K.expand_dims(self.v)), axis=-1))
+        ait = LayerNormalization()(K.squeeze(K.dot(uit, K.expand_dims(K.sigmoid(self.v))), axis=-1))
         a = K.exp(ait)
         a /= K.cast(K.sum(a, axis=1, keepdims=True) + K.epsilon(), K.floatx())
         a = K.expand_dims(a)

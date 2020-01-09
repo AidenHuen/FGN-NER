@@ -176,8 +176,8 @@ if __name__ == "__main__":
     dataset = "weibo-ner"
 
 
-    para["model_path"] = "./model/"+dataset+"/bert"
-    finetune_bert(para)
+    # para["model_path"] = "./model/"+dataset+"/bert"
+    # finetune_bert(para)
     para["embed_path"] = "./model/"+dataset+"/bert"
     para["model_path"] = "./model/"+dataset+"/bert-img" #&radical-outer
     train_bert(para,feature="img", use_bert=True,use_bert_embed=True)
