@@ -79,7 +79,7 @@ def finetune_bert(para):
     # model.fit(x=[x1_train, x2_train], y=y_train, verbose=2, batch_size=para["batch_size"],
     #               callbacks=[checkpoint], validation_data=([x1_test,x2_test],y_test), epochs=para["EPOCHS"])
     F_max = 0
-    for i in range(10):
+    for i in range(15):
         print("epochs:",i)
         model.fit(x=[x1_train, x2_train], y=y_train, verbose=1, batch_size=para["batch_size"], epochs=1)
         pred_y = model.predict([x1_test,x2_test],verbose=1,batch_size=64)
